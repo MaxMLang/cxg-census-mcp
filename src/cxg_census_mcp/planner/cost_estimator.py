@@ -68,9 +68,7 @@ def estimate_cost(
 
     dataset_ids = resolved_filters.get("dataset_id") or []
     dataset_bound = (
-        _dataset_upper_bound(client, census_version, list(dataset_ids))
-        if dataset_ids
-        else None
+        _dataset_upper_bound(client, census_version, list(dataset_ids)) if dataset_ids else None
     )
 
     df = tbl.to_pylist()
@@ -115,9 +113,7 @@ def estimate_cost(
         )
 
     wide_filters = {
-        col: vals
-        for col, vals in resolved_filters.items()
-        if col not in {"dataset_id", "donor_id"}
+        col: vals for col, vals in resolved_filters.items() if col not in {"dataset_id", "donor_id"}
     }
     matched = [r for r in df if _matches_wide(r, wide_filters)]
     cells = sum(int(r.get("n_cells") or 0) for r in matched)

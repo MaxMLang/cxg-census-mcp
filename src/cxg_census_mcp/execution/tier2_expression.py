@@ -68,7 +68,9 @@ async def run_tier2_expression(
             a["sum"] += partial["sum"]
             a["sum_sq"] += partial["sum_sq"]
             a["n_nonzero"] += partial["n_nonzero"]
-            a["n_cells"] = max(a["n_cells"], partial["n_cells"])  # group size from obs; constant per chunk
+            a["n_cells"] = max(
+                a["n_cells"], partial["n_cells"]
+            )  # group size from obs; constant per chunk
         if progress is not None:
             await progress.update(
                 n_cells_total, f"aggregating chunk {chunk_idx} ({n_cells_total} cells)"

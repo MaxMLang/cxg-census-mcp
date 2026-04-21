@@ -10,7 +10,6 @@ from cxg_census_mcp.planner.cost_estimator import estimate_cost
 
 
 class _StubClient:
-
     def __init__(
         self,
         summary_rows: list[dict],
