@@ -8,7 +8,7 @@ authors:
 repository-code: "https://github.com/MaxMLang/cxg-census-mcp"
 url: "https://github.com/MaxMLang/cxg-census-mcp"
 license: MIT
-version: 0.1.0
+version: 0.1.1
 date-released: "2026-04-21"
 keywords:
   - model-context-protocol
