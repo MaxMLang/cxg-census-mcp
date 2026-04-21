@@ -21,7 +21,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /build
 
 # Install uv from its official image; faster than pip-installing it.
-COPY --from=ghcr.io/astral-sh/uv:0.5.0 /uv /uvx /usr/local/bin/
+COPY --from=ghcr.io/astral-sh/uv:0.11.7 /uv /uvx /usr/local/bin/
 
 COPY pyproject.toml README.md uv.lock* ./
 COPY src/ ./src/

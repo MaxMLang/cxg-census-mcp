@@ -63,11 +63,9 @@ permissions yourself regardless.
 This project is maintained by a single author, in spare time. Please **do
 not** file public GitHub issues for security problems.
 
-- Email: open the GitHub profile of the maintainer
-  ([@MaxMLang](https://github.com/MaxMLang)) and use the contact listed
-  there, or open a [GitHub Security Advisory](https://github.com/MaxMLang/cxg-census-mcp/security/advisories/new)
-  on the repo (preferred — keeps the report private).
-- Please include a minimal reproduction and the version (`pip show cxg-census-mcp`).
+- Open a [private GitHub Security Advisory](https://github.com/MaxMLang/cxg-census-mcp/security/advisories/new)
+  on the repository — this keeps the report confidential until a fix is ready.
+- Include a minimal reproduction and the version (`pip show cxg-census-mcp`).
 - Expect a best-effort response within 1–2 weeks. There are no SLAs.
 
 ## Supported versions

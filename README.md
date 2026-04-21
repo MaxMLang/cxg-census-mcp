@@ -1,5 +1,9 @@
 # cxg-census-mcp
 
+[![CI](https://github.com/MaxMLang/cxg-census-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/MaxMLang/cxg-census-mcp/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue.svg)](pyproject.toml)
+
 A community-built [Model Context Protocol](https://modelcontextprotocol.io)
 (MCP) server that lets LLM agents query the [CZ CELLxGENE Discover Census](https://chanzuckerberg.github.io/cellxgene-census/)
 single-cell atlas with ontology-aware filters, cost caps, and provenance on
