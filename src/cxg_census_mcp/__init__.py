@@ -14,7 +14,7 @@ from importlib.metadata import version as _pkg_version
 try:
     __version__ = _pkg_version("cxg-census-mcp")
 except PackageNotFoundError:  # editable installs without metadata
-    __version__ = "0.1.0"
+    __version__ = "0.1.1"
 
 ATTRIBUTION = (
     "Data: CZ CELLxGENE Discover Census, distributed by the Chan Zuckerberg "

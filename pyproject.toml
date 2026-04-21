@@ -1,10 +1,11 @@
 [project]
 name = "cxg-census-mcp"
-version = "0.1.0"
-description = "Community Model Context Protocol (MCP) server for the CZ CELLxGENE Discover Census single-cell atlas: ontology-aware filters, provenance, caps, export_snippet. Independent project, not affiliated with CZI, EBI, or any government statistical agency."
+version = "0.1.1"
+description = "Community MCP server for the CZ CELLxGENE Discover Census single-cell atlas. Ontology-aware, provenance-tracked, unaffiliated with CZI."
 readme = "README.md"
 requires-python = ">=3.11,<3.13"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [{ name = "Max M. Lang" }]
 maintainers = [{ name = "Max M. Lang" }]
 keywords = [
@@ -30,14 +31,15 @@ keywords = [
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Intended Audience :: Science/Research",
     "Intended Audience :: Developers",
     "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Software Development :: Libraries",
     "Operating System :: OS Independent",
+    "Typing :: Typed",
 ]
 
 dependencies = [
