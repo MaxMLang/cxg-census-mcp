@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+import contextlib
+import os
+import stat
+import sys
 from functools import lru_cache
 from pathlib import Path
 
@@ -71,6 +75,17 @@ class Settings(BaseSettings):
         return v.upper()
 
     def ensure_dirs(self) -> None:
+        # Cache values are pickled by `diskcache` (see CVE-2025-69872 — local
+        # write access to the cache dir would let an attacker get code
+        # execution at next read). Lock the cache root down to the owner so
+        # other local users on a shared system cannot tamper with it. We do
+        # not enforce this on Windows (POSIX perms don't apply) and we do not
+        # error if `chmod` fails (e.g. mounted filesystems without perm bits)
+        # — best-effort hardening, not a security guarantee.
+        self.cache_dir.mkdir(parents=True, exist_ok=True)
+        if sys.platform != "win32":
+            with contextlib.suppress(OSError):
+                os.chmod(self.cache_dir, stat.S_IRWXU)  # 0700
         for sub in ("ols", "facets", "plans"):
             (self.cache_dir / sub).mkdir(parents=True, exist_ok=True)
 

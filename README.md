@@ -13,7 +13,8 @@ every response.
 > **No warranty.** MIT-licensed source, "as is". Research/exploration tool —
 > **not** a clinical or diagnostic instrument. Always verify results before
 > publication. See [LICENSE](LICENSE) for the full trademark and content
-> attribution notice.
+> attribution notice, and [SECURITY.md](SECURITY.md) for the threat model
+> and the policy on known issues (currently CVE-2025-69872 in `diskcache`).
 
 > Alpha (v0.3.0). [`CHANGELOG.md`](CHANGELOG.md)
 
