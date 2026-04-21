@@ -1,0 +1,15 @@
+# Inputs the resolver MUST refuse with TERM_AMBIGUOUS or TERM_NOT_FOUND.
+- id: empty_text
+  text: ""
+  ontology: CL
+  expected:
+    refusal: true
+    code: TERM_NOT_FOUND
+
+- id: ms_abbreviation_resolves_via_hint
+  description: "MS is in the hint overlay and resolves deterministically."
+  text: "ms"
+  ontology: MONDO
+  expected:
+    refusal: false
+    curie: "MONDO:0005301"

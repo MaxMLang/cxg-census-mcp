@@ -1,0 +1,52 @@
+# Golden FilterSpec → expected resolved filter / value_filter shape.
+# Used by integration/test_filter_cases.py to lock down ontology routing.
+- id: simple_b_cell_lung
+  description: Resolve B cell + lung; routes to specific tissue column.
+  filters:
+    organism: homo_sapiens
+    cell_type:
+      term: "CL:0000236"
+    tissue:
+      term: "UBERON:0002048"
+  expected:
+    tissue_strategy: tissue_general  # lung is a roll-up term
+    columns_used:
+      - tissue_general_ontology_term_id
+      - cell_type_ontology_term_id
+      - is_primary_data
+    rewrites_applied: []
+    is_primary_data: true
+
+- id: covid_lung_with_text_resolve
+  description: Free-text disease + tissue, hint-overlay resolution.
+  filters:
+    organism: homo_sapiens
+    disease:
+      text: covid-19
+    tissue:
+      text: lung
+  expected:
+    tissue_strategy: tissue_general
+    rewrites_applied:
+      - disease_multi_value_v7  # schema 7+ rewrites disease eq → contains
+    is_primary_data: true
+
+- id: multi_disease_union
+  description: MultiTermFilter for disease cohort.
+  filters:
+    organism: homo_sapiens
+    disease:
+      any_of: ["MONDO:0100096", "MONDO:0004975"]
+  expected:
+    rewrites_applied:
+      - disease_multi_value_v7
+
+- id: dataset_id_only
+  description: Bypasses ontology resolver.
+  filters:
+    organism: homo_sapiens
+    dataset_id: "00000000-0000-0000-0000-000000000001"
+  expected:
+    columns_used:
+      - dataset_id
+      - is_primary_data

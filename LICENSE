@@ -1,0 +1,58 @@
+MIT License
+
+Copyright (c) 2026 Max M. Lang and cxg-census-mcp contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+Trademark notice
+----------------
+
+"CELLxGENE", "CELLxGENE Discover", and "CELLxGENE Discover Census" are
+product/brand names of the Chan Zuckerberg Initiative (CZI). This project is
+an independent, community-maintained Model Context Protocol (MCP) server that
+*queries* the publicly available CZ CELLxGENE Discover Census data product.
+It is not affiliated with, endorsed by, sponsored by, or otherwise connected
+to CZI, the Chan Zuckerberg Biohub, the European Bioinformatics Institute
+(EBI / EMBL-EBI), or any government statistical agency (including the
+United States Census Bureau). No use of these third-party names is intended
+as a claim of affiliation; any references are purely descriptive
+("nominative use") to identify the upstream data and services this server
+talks to.
+
+Upstream data and content licensing
+-----------------------------------
+
+- **CZ CELLxGENE Discover Census data** is distributed by the Chan Zuckerberg
+  Initiative under the Creative Commons Attribution 4.0 International license
+  (CC BY 4.0), https://creativecommons.org/licenses/by/4.0/. Every response
+  produced by this server includes a machine-readable `attribution` field
+  pointing back to the Census; users redistributing derived results must
+  preserve that attribution and indicate that changes were made (aggregation,
+  filtering, etc.).
+- **Ontology terms** are retrieved from the EBI Ontology Lookup Service
+  (OLS4) and originate from third-party ontologies (Cell Ontology / CL,
+  Uberon / UBERON, Mondo / MONDO, Experimental Factor Ontology / EFO,
+  HANCESTRO, and others). Each ontology carries its own license (typically
+  CC BY 4.0 or CC0); see the respective ontology's website for terms.
+- **Trade marks remain the property of their respective owners.**
+
+The MIT license above covers only the source code in this repository, not the
+upstream data, ontologies, or any third-party trademarks.

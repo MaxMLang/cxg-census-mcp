@@ -1,0 +1,35 @@
+name: live-smoke
+
+on:
+  schedule:
+    - cron: "11 6 * * 3"   # Wednesdays 06:11 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with:
+          python-version: "3.11"
+      - run: uv sync --extra dev --extra census
+      - name: Run live E2E suite
+        run: uv run pytest -m live -v
+      - name: Open issue on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `live-smoke failed (${context.runId})`,
+              body: `Weekly live-smoke run failed. See: ${context.payload.repository.html_url}/actions/runs/${context.runId}`,
+              labels: ['live-smoke', 'bug'],
+            });

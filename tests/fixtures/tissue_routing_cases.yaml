@@ -1,0 +1,27 @@
+- id: lung_specific
+  curie: "UBERON:0002048"
+  expansion_terms: []
+  expected:
+    strategy: tissue_general
+    column: tissue_general_ontology_term_id
+
+- id: lung_with_specific_descendants
+  curie: "UBERON:0002048"
+  expansion_terms: ["UBERON:0002048", "UBERON:0008952"]  # lung + lobe of lung
+  expected:
+    strategy: dual_column
+    column: tissue_ontology_term_id
+
+- id: heart_specific_anatomy
+  curie: "UBERON:0000948"
+  expansion_terms: []
+  expected:
+    strategy: tissue_general
+    column: tissue_general_ontology_term_id
+
+- id: cerebellum_only_specific
+  curie: "UBERON:0002037"  # not in tissue_general
+  expansion_terms: []
+  expected:
+    strategy: tissue
+    column: tissue_ontology_term_id

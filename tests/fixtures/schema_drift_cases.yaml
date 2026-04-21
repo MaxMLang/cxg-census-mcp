@@ -1,0 +1,23 @@
+- id: disease_eq_rewritten_in_v7
+  schema_version: "7.0.0"
+  column: disease_ontology_term_id
+  operator: eq
+  value: "MONDO:0100096"
+  expected_predicate_contains: "MONDO:0100096"
+  expected_rule_id: disease_multi_value_v7
+
+- id: disease_eq_passthrough_in_v5
+  schema_version: "5.4.0"
+  column: disease_ontology_term_id
+  operator: eq
+  value: "MONDO:0100096"
+  expected_predicate_contains: "=="
+  expected_rule_id: null
+
+- id: ethnicity_in_rewritten_in_v6
+  schema_version: "6.1.0"
+  column: self_reported_ethnicity_ontology_term_id
+  operator: in
+  value: ["HANCESTRO:0005", "HANCESTRO:0010"]
+  expected_predicate_contains: "HANCESTRO:0005"
+  expected_rule_id: self_reported_ethnicity_multi_v6

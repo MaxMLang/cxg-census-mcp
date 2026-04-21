@@ -1,0 +1,32 @@
+.git
+.github
+.venv
+.cache
+.mypy_cache
+.pytest_cache
+.ruff_cache
+htmlcov
+dist
+build
+*.egg-info
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+.coverage
+coverage.xml
+metrics.prom
+
+# Tests + docs not needed in image
+tests
+docs
+
+# Local IDE state
+.vscode
+.idea
+.cursor
+
+# Avoid leaking secrets
+*.env
+.env*

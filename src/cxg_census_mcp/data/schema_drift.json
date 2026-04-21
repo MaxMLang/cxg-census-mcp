@@ -1,0 +1,24 @@
+{
+  "_meta": {
+    "schema": 1,
+    "description": "Schema-version-aware predicate rewrites. See ontology/rewrites.py."
+  },
+  "rules": [
+    {
+      "id": "disease_multi_value_v7",
+      "schema_range": ">=7.0.0",
+      "column": "disease_ontology_term_id",
+      "condition": "value_is_curie",
+      "rewrite_kind": "eq_to_contains",
+      "notes": "Schema 7+ allows '||'-delimited disease IDs in a single cell; equality must become a substring match against the ID column."
+    },
+    {
+      "id": "self_reported_ethnicity_multi_v6",
+      "schema_range": ">=6.0.0",
+      "column": "self_reported_ethnicity_ontology_term_id",
+      "condition": "value_is_curie",
+      "rewrite_kind": "eq_to_contains",
+      "notes": "Multi-ancestry donors stored as '||'-delimited list."
+    }
+  ]
+}
