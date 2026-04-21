@@ -3,11 +3,20 @@
 [![CI](https://github.com/MaxMLang/cxg-census-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/MaxMLang/cxg-census-mcp/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue.svg)](pyproject.toml)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![Checked with mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![MCP](https://img.shields.io/badge/MCP-server-8A2BE2)](https://modelcontextprotocol.io)
+[![Status: alpha](https://img.shields.io/badge/status-alpha-orange)](CHANGELOG.md)
+[![Last commit](https://img.shields.io/github/last-commit/MaxMLang/cxg-census-mcp)](https://github.com/MaxMLang/cxg-census-mcp/commits/main)
 
-A community-built [Model Context Protocol](https://modelcontextprotocol.io)
-(MCP) server that lets LLM agents query the [CZ CELLxGENE Discover Census](https://chanzuckerberg.github.io/cellxgene-census/)
-single-cell atlas with ontology-aware filters, cost caps, and provenance on
-every response.
+An [MCP](https://modelcontextprotocol.io) server that lets LLM agents
+query the [CZ CELLxGENE Discover Census](https://chanzuckerberg.github.io/cellxgene-census/)
+single-cell atlas without lying about it — ontology-aware filters, cost
+caps, full provenance + attribution on every response. Drop it into
+Cursor / Claude Desktop / Claude Code and ask questions like *"compare
+immune cell composition of healthy vs COVID-19 human lung"* in plain
+English.
 
 > **Independent / unaffiliated.** Authored by Max M. Lang. Not affiliated
 > with, endorsed by, or sponsored by the Chan Zuckerberg Initiative (CZI),
@@ -21,6 +30,23 @@ every response.
 > and known-issues policy.
 
 > Alpha (v0.1.0). [`CHANGELOG.md`](CHANGELOG.md)
+
+## Demos
+
+**Cell-type composition of human lung in one query.** Free-text "lung"
+resolved to `UBERON:0002048`, routed through `tissue_general`, every CURIE
+labeled, all in a single Tier-0 call.
+
+https://github.com/user-attachments/assets/b0e10ca7-e46b-4e5f-ae63-11949d328c4d
+
+**Healthy vs COVID-19 lung, side-by-side.** Two parallel queries, the
+`disease_multi_value_v7` schema-drift rewrite kicks in for the COVID
+cohort, attribution from both contributing dataset sets surfaces in the
+same chat turn.
+
+https://github.com/user-attachments/assets/c836f225-5075-4643-87aa-70d311bc5fd2
+
+More prompts in [`docs/example-questions.md`](docs/example-questions.md).
 
 ## Architecture at a glance
 
@@ -75,24 +101,33 @@ and offline demos) and returns deterministic fixture data.
 
 ## MCP client config
 
-Cursor (`.cursor/mcp.json`) and Claude Desktop both expect the same shape:
+Cursor (`~/.cursor/mcp.json`) and Claude Desktop
+(`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS)
+both expect the same shape:
 
 ```json
 {
   "mcpServers": {
     "cxg-census": {
-      "command": "uv",
+      "command": "/absolute/path/to/uv",
       "args": ["--directory", "/path/to/cxg-census-mcp", "run", "cxg-census-mcp"]
     }
   }
 }
 ```
 
+> Use the **absolute** path to `uv` (`which uv` from your shell). MCP clients
+> spawn the server in a non-interactive subprocess that doesn't source your
+> shell rc, so a bare `"uv"` will fail with `No such file or directory`.
+
 Claude Code:
 
 ```bash
-claude mcp add cxg-census -- uv --directory /path/to/cxg-census-mcp run cxg-census-mcp
+claude mcp add cxg-census -- /absolute/path/to/uv --directory /path/to/cxg-census-mcp run cxg-census-mcp
 ```
+
+Quit + relaunch your client (⌘Q on macOS — closing the window isn't enough)
+and the server should show up in the MCP panel with 13 tools.
 
 ## Tools (13 total)
 
