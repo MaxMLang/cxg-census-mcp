@@ -27,7 +27,7 @@ jobs:
           CXG_CENSUS_MCP_CENSUS_VERSION: ${{ github.event.inputs.census_version || 'stable' }}
         run: uv run python scripts/refresh_facet_catalog.py --write
       - name: Open PR if changed
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: "chore(facets): refresh facet catalog"
           title: "chore(facets): refresh facet catalog"
