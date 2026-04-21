@@ -32,8 +32,11 @@ format:  ## Run ruff format
 typecheck:  ## Run mypy on src
 	uv run mypy src/cxg_census_mcp
 
-audit:  ## Scan installed deps for known CVEs
-	uv run --with pip-audit pip-audit --strict --skip-editable
+audit:  ## Scan locked production deps for known CVEs (skips editable project)
+	uv export --no-dev --no-emit-project --format requirements-txt > _audit-reqs.txt
+	uv run --with pip-audit pip-audit --strict -r _audit-reqs.txt \
+		--ignore-vuln CVE-2025-69872
+	rm -f _audit-reqs.txt
 
 ## --- Tests -----------------------------------------------------------------
 

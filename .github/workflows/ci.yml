@@ -72,7 +72,13 @@ jobs:
           enable-cache: true
       - run: uv sync --extra dev
       - name: pip-audit
-        run: uv run --with pip-audit pip-audit --strict --skip-editable
+        # Audit the locked production dep tree, not the editable project itself.
+        # Ignored CVEs:
+        #   CVE-2025-69872  diskcache 5.6.3 — local-only cache, no upstream fix yet (revisit on next diskcache release)
+        run: |
+          uv export --no-dev --no-emit-project --format requirements-txt > _audit-reqs.txt
+          uv run --with pip-audit pip-audit --strict -r _audit-reqs.txt \
+            --ignore-vuln CVE-2025-69872
 
   validate-fixtures:
     runs-on: ubuntu-latest
