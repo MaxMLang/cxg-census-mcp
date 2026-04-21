@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/MaxMLang/cxg-census-mcp/security/advisories/new
+    about: Please report security issues privately via GitHub Security Advisories — see SECURITY.md.
+  - name: Question / discussion
+    url: https://github.com/MaxMLang/cxg-census-mcp/discussions
+    about: For "how do I…" questions and general discussion (enable Discussions on the repo first).

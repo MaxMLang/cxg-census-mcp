@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use cxg-census-mcp in academic work, please cite it as below."
+title: "cxg-census-mcp: A community Model Context Protocol server for the CZ CELLxGENE Discover Census"
+type: software
+authors:
+  - family-names: Lang
+    given-names: Max M.
+    orcid: "https://orcid.org/0000-0000-0000-0000"  # TODO: replace with real ORCID or remove
+repository-code: "https://github.com/MaxMLang/cxg-census-mcp"
+url: "https://github.com/MaxMLang/cxg-census-mcp"
+license: MIT
+version: 0.1.0
+date-released: "2026-04-21"
+keywords:
+  - model-context-protocol
+  - mcp
+  - cellxgene
+  - cellxgene-census
+  - single-cell
+  - bioinformatics
+  - large-language-models
+  - ontology
+references:
+  - type: software
+    title: "CZ CELLxGENE Discover Census"
+    authors:
+      - name: "Chan Zuckerberg Initiative"
+    url: "https://chanzuckerberg.github.io/cellxgene-census/"
+    notes: "Upstream data source. Distributed under CC BY 4.0."
+  - type: software
+    title: "EBI Ontology Lookup Service (OLS4)"
+    authors:
+      - name: "EMBL-EBI"
+    url: "https://www.ebi.ac.uk/ols4/"
+    notes: "Upstream ontology service used to resolve and expand terms."

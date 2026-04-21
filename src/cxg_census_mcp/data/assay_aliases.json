@@ -1,0 +1,25 @@
+{
+  "_meta": {
+    "schema": 1,
+    "description": "Assay alias map (text → EFO CURIE). Mirrors ontology_hints.assays for direct lookup."
+  },
+  "aliases": {
+    "10x": "EFO:0009899",
+    "10x v2": "EFO:0009899",
+    "10x v3": "EFO:0009922",
+    "10x 3' v2": "EFO:0009899",
+    "10x 3' v3": "EFO:0009922",
+    "smart-seq2": "EFO:0008931",
+    "smartseq2": "EFO:0008931",
+    "drop-seq": "EFO:0008722",
+    "sci-rna-seq": "EFO:0010550",
+    "snrna-seq": "EFO:0009311",
+    "scrna-seq": "EFO:0008913",
+    "snseq": "EFO:0009311",
+    "indrop": "EFO:0008780",
+    "celseq": "EFO:0008679",
+    "celseq2": "EFO:0010010",
+    "fluidigm c1": "EFO:0010058",
+    "mars-seq": "EFO:0008796"
+  }
+}

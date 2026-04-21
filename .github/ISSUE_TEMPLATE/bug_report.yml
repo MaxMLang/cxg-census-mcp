@@ -1,0 +1,91 @@
+name: Bug report
+description: Something is broken or behaving unexpectedly.
+title: "[bug] "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. Please fill in everything
+        you can — vague reports tend to get closed without action.
+
+  - type: input
+    id: version
+    attributes:
+      label: cxg-census-mcp version
+      description: Output of `pip show cxg-census-mcp` (or the git commit if installed from source).
+      placeholder: "0.1.0"
+    validations:
+      required: true
+
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      description: Output of `python --version`.
+      placeholder: "3.11.9"
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: "macOS 14.5 / Ubuntu 22.04 / Windows 11"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: client
+    attributes:
+      label: MCP client
+      options:
+        - Cursor
+        - Claude Desktop
+        - Claude Code
+        - Other (specify in description)
+        - N/A — calling the server directly
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Mode
+      options:
+        - Live Census (cellxgene_census installed)
+        - Mock mode (CXG_CENSUS_MCP_MOCK_MODE=1)
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Minimal steps to reproduce the bug. Tool name + arguments is usually enough.
+      placeholder: |
+        1. Call `count_cells` with `{"cell_type": {"term": "CL:0000236"}}`
+        2. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include the full error message / response envelope (`warnings`, `query_provenance`) if applicable.
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Logs, env vars, anything else that might help.

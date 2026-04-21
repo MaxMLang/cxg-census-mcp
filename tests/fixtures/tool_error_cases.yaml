@@ -1,0 +1,18 @@
+- id: invalid_curie_in_term
+  tool: resolve_term
+  args:
+    text: "not a curie"
+    ontology: ZZZ
+  expected_code: TERM_NOT_FOUND
+
+- id: aggregate_too_many_genes
+  tool: aggregate_expression
+  args:
+    filters:
+      organism: homo_sapiens
+      cell_type:
+        term: "CL:0000236"
+    # Marker; integration test fills with `["ENSG00000000000"] * (max_expression_genes + 1)`.
+    gene_ids: TOO_MANY
+    group_by: cell_type
+  expected_code: TOO_MANY_GENES

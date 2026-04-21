@@ -1,0 +1,301 @@
+{
+  "_meta": {
+    "schema": 1,
+    "description": "Curated text → CURIE overlay used before OLS lookup. Refreshed weekly.",
+    "last_refreshed": "2026-04-21",
+    "review_required_for_canonical_changes": true
+  },
+  "diseases": {
+    "covid": {
+      "canonical": "MONDO:0100096",
+      "label": "COVID-19",
+      "aliases": [
+        "covid-19",
+        "covid 19",
+        "sars-cov-2 infection",
+        "coronavirus disease 2019"
+      ]
+    },
+    "covid-19": {
+      "canonical": "MONDO:0100096",
+      "label": "COVID-19"
+    },
+    "covid 19": {
+      "canonical": "MONDO:0100096",
+      "label": "COVID-19"
+    },
+    "sars-cov-2 infection": {
+      "canonical": "MONDO:0100096",
+      "label": "COVID-19"
+    },
+    "alzheimer": {
+      "canonical": "MONDO:0004975",
+      "label": "Alzheimer disease",
+      "aliases": [
+        "alzheimer's",
+        "alzheimer disease",
+        "ad"
+      ]
+    },
+    "alzheimer's": {
+      "canonical": "MONDO:0004975",
+      "label": "Alzheimer disease"
+    },
+    "alzheimer's disease": {
+      "canonical": "MONDO:0004975",
+      "label": "Alzheimer disease"
+    },
+    "type 2 diabetes": {
+      "canonical": "MONDO:0005148",
+      "label": "type 2 diabetes mellitus",
+      "aliases": [
+        "t2d",
+        "type ii diabetes",
+        "type-2 diabetes"
+      ]
+    },
+    "t2d": {
+      "canonical": "MONDO:0005148",
+      "label": "type 2 diabetes mellitus"
+    },
+    "ms": {
+      "canonical": "MONDO:0005301",
+      "label": "multiple sclerosis",
+      "note": "Ambiguous abbreviation; confirm before use."
+    },
+    "multiple sclerosis": {
+      "canonical": "MONDO:0005301",
+      "label": "multiple sclerosis"
+    },
+    "lung cancer": {
+      "canonical": "MONDO:0008903",
+      "label": "lung cancer",
+      "aliases": [
+        "nsclc"
+      ]
+    },
+    "ibd": {
+      "canonical": "MONDO:0005265",
+      "label": "inflammatory bowel disease"
+    },
+    "normal": {
+      "canonical": "PATO:0000461",
+      "label": "normal",
+      "note": "Use is_primary_data=True and disease='normal' for healthy controls."
+    }
+  },
+  "cell_types": {
+    "t cell": {
+      "canonical": "CL:0000084",
+      "label": "T cell",
+      "note": "Use expand=descendants_inclusive unless you want only naive T cells."
+    },
+    "b cell": {
+      "canonical": "CL:0000236",
+      "label": "B cell"
+    },
+    "nk cell": {
+      "canonical": "CL:0000623",
+      "label": "natural killer cell"
+    },
+    "natural killer cell": {
+      "canonical": "CL:0000623",
+      "label": "natural killer cell"
+    },
+    "macrophage": {
+      "canonical": "CL:0000235",
+      "label": "macrophage"
+    },
+    "monocyte": {
+      "canonical": "CL:0000576",
+      "label": "monocyte"
+    },
+    "dendritic cell": {
+      "canonical": "CL:0000451",
+      "label": "dendritic cell",
+      "aliases": [
+        "dc"
+      ]
+    },
+    "endothelial cell": {
+      "canonical": "CL:0000115",
+      "label": "endothelial cell"
+    },
+    "epithelial cell": {
+      "canonical": "CL:0000066",
+      "label": "epithelial cell"
+    },
+    "fibroblast": {
+      "canonical": "CL:0000057",
+      "label": "fibroblast"
+    },
+    "neuron": {
+      "canonical": "CL:0000540",
+      "label": "neuron"
+    },
+    "astrocyte": {
+      "canonical": "CL:0000127",
+      "label": "astrocyte"
+    },
+    "microglia": {
+      "canonical": "CL:0000129",
+      "label": "microglial cell"
+    },
+    "hepatocyte": {
+      "canonical": "CL:0000182",
+      "label": "hepatocyte"
+    },
+    "cd4 t cell": {
+      "canonical": "CL:0000624",
+      "label": "CD4-positive, alpha-beta T cell"
+    },
+    "cd8 t cell": {
+      "canonical": "CL:0000625",
+      "label": "CD8-positive, alpha-beta T cell"
+    },
+    "treg": {
+      "canonical": "CL:0000815",
+      "label": "regulatory T cell",
+      "aliases": [
+        "regulatory t cell"
+      ]
+    },
+    "plasma cell": {
+      "canonical": "CL:0000786",
+      "label": "plasma cell"
+    }
+  },
+  "tissues": {
+    "lung": {
+      "canonical": "UBERON:0002048",
+      "label": "lung"
+    },
+    "brain": {
+      "canonical": "UBERON:0000955",
+      "label": "brain"
+    },
+    "heart": {
+      "canonical": "UBERON:0000948",
+      "label": "heart"
+    },
+    "liver": {
+      "canonical": "UBERON:0002107",
+      "label": "liver"
+    },
+    "kidney": {
+      "canonical": "UBERON:0002113",
+      "label": "kidney"
+    },
+    "blood": {
+      "canonical": "UBERON:0000178",
+      "label": "blood"
+    },
+    "pbmc": {
+      "canonical": "UBERON:0000178",
+      "label": "blood",
+      "note": "PBMCs are blood-derived; tissue is recorded as blood."
+    },
+    "skin": {
+      "canonical": "UBERON:0002097",
+      "label": "skin of body"
+    },
+    "intestine": {
+      "canonical": "UBERON:0000160",
+      "label": "intestine"
+    },
+    "colon": {
+      "canonical": "UBERON:0001155",
+      "label": "colon"
+    },
+    "pancreas": {
+      "canonical": "UBERON:0001264",
+      "label": "pancreas"
+    },
+    "spleen": {
+      "canonical": "UBERON:0002106",
+      "label": "spleen"
+    },
+    "thymus": {
+      "canonical": "UBERON:0002370",
+      "label": "thymus"
+    },
+    "bone marrow": {
+      "canonical": "UBERON:0002371",
+      "label": "bone marrow"
+    }
+  },
+  "assays": {
+    "10x v2": {
+      "canonical": "EFO:0009899",
+      "label": "10x 3' v2"
+    },
+    "10x v3": {
+      "canonical": "EFO:0009922",
+      "label": "10x 3' v3"
+    },
+    "10x 3' v2": {
+      "canonical": "EFO:0009899",
+      "label": "10x 3' v2"
+    },
+    "10x 3' v3": {
+      "canonical": "EFO:0009922",
+      "label": "10x 3' v3"
+    },
+    "smart-seq2": {
+      "canonical": "EFO:0008931",
+      "label": "Smart-seq2"
+    },
+    "smartseq2": {
+      "canonical": "EFO:0008931",
+      "label": "Smart-seq2"
+    },
+    "drop-seq": {
+      "canonical": "EFO:0008722",
+      "label": "Drop-seq"
+    },
+    "sci-rna-seq": {
+      "canonical": "EFO:0010550",
+      "label": "sci-RNA-seq"
+    },
+    "snrna-seq": {
+      "canonical": "EFO:0009311",
+      "label": "single nucleus RNA sequencing"
+    },
+    "scrna-seq": {
+      "canonical": "EFO:0008913",
+      "label": "single-cell RNA sequencing"
+    }
+  },
+  "development_stage": {
+    "adult": {
+      "canonical": "HsapDv:0000087",
+      "label": "human adult stage"
+    },
+    "fetal": {
+      "canonical": "HsapDv:0000037",
+      "label": "human fetal stage"
+    },
+    "embryo": {
+      "canonical": "HsapDv:0000002",
+      "label": "embryonic human stage"
+    }
+  },
+  "ethnicity": {
+    "european": {
+      "canonical": "HANCESTRO:0005",
+      "label": "European ancestry"
+    },
+    "african": {
+      "canonical": "HANCESTRO:0010",
+      "label": "African ancestry"
+    },
+    "asian": {
+      "canonical": "HANCESTRO:0008",
+      "label": "Asian ancestry"
+    },
+    "hispanic": {
+      "canonical": "HANCESTRO:0014",
+      "label": "Latin or Admixed American ancestry"
+    }
+  }
+}
