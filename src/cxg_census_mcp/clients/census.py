@@ -467,9 +467,54 @@ def _mock_count_obs(value_filter: str, organism: str) -> int:
     return 12_345 + (abs(hash((organism, value_filter))) % 90_000)
 
 
+def _mock_groups_for(group_by: str, organism: str) -> list[str]:
+    """Pick a representative set of group values for a given obs column.
+
+    Mock mode honours the caller's requested ``group_by`` so heat-map style
+    queries (e.g. expression by tissue or by dataset) don't always collapse
+    onto the cell-type axis. Values are pinned where possible to CURIEs that
+    already appear in the shipped facet catalog so any subsequent filter on
+    a returned group key resolves cleanly.
+    """
+    pins = {
+        "cell_type_ontology_term_id": [
+            "CL:0000236",  # B cell
+            "CL:0000084",  # T cell
+            "CL:0000235",  # macrophage
+            "CL:0000540",  # neuron
+        ],
+        "tissue_general_ontology_term_id": [
+            "UBERON:0002048",  # lung
+            "UBERON:0000955",  # brain
+            "UBERON:0000178",  # blood
+            "UBERON:0001155",  # colon
+            "UBERON:0002107",  # liver
+            "UBERON:0002106",  # spleen
+        ],
+        "tissue_ontology_term_id": [
+            "UBERON:0002048",
+            "UBERON:0000955",
+            "UBERON:0000178",
+        ],
+        "disease_ontology_term_id": [
+            "PATO:0000461",  # normal
+            "MONDO:0100096",  # COVID-19
+            "MONDO:0004975",  # Alzheimer disease
+        ],
+        "assay_ontology_term_id": [
+            "EFO:0009922",  # 10x 3' v3
+            "EFO:0010550",  # sci-RNA-seq3
+        ],
+        "dataset_id": [f"mock-{i:08d}-0000-0000-0000-000000000000" for i in range(4)],
+        "donor_id": [f"mock-donor-{i}" for i in range(4)],
+    }
+    return pins.get(group_by, [f"mock-group-{i}" for i in range(3)])
+
+
 def _mock_grouped_counts(value_filter: str, organism: str, group_by: str) -> dict[str, int]:
     base = _mock_count_obs(value_filter, organism)
-    return {f"mock-group-{i}": base // (i + 2) for i in range(3)}
+    groups = _mock_groups_for(group_by, organism)
+    return {g: max(1, base // (i + 2)) for i, g in enumerate(groups)}
 
 
 def _mock_summary_table(version: str, organism: str) -> pa.Table:
@@ -585,20 +630,32 @@ def _mock_expression_chunk(
     group_by: str,
     organism: str,
 ) -> dict[tuple[str, str], dict[str, float]]:
-    cell_types = ["CL:0000236", "CL:0000084"]
+    """Synthetic per-(group, gene) sufficient stats that vary deterministically.
+
+    The mock used to return a fixed CL:0000236 / CL:0000084 axis with uniform
+    0.9 means regardless of the requested ``group_by``. That made anything
+    other than cell-type grouping in mock mode look like censored placeholder
+    data. Now: the group axis follows ``group_by`` (lung / brain / blood /
+    … for tissue, dataset UUIDs for dataset_id, etc) and the per-cell mean
+    is jittered by a stable hash of (group, gene) so heat-map style queries
+    actually look heat-map-ish.
+    """
+    groups = _mock_groups_for(group_by, organism)
     acc: dict[tuple[str, str], dict[str, float]] = {}
-    for ct in cell_types:
+    for grp in groups:
         for gid in gene_ids:
-            n_cells = 25
-            n_nonzero = 15
-            mean = 1.5
-            sum_v = mean * n_nonzero
-            sum_sq = (mean * mean) * n_nonzero
-            acc[(ct, gid)] = {
+            seed = abs(hash((grp, gid, organism))) % 10_000
+            n_cells = 60 + seed % 200
+            fraction = 0.05 + (seed % 90) / 100.0  # 0.05 .. 0.94
+            n_nonzero = max(1, int(n_cells * fraction))
+            mean_per_expressing = 0.4 + (seed % 250) / 100.0  # 0.4 .. 2.9
+            sum_v = mean_per_expressing * n_nonzero
+            sum_sq = (mean_per_expressing**2) * n_nonzero
+            acc[(grp, gid)] = {
                 "sum": sum_v,
                 "sum_sq": sum_sq,
                 "n_nonzero": n_nonzero,
-                "n_cells": n_cells,
+                "n_cells": float(n_cells),
             }
     return acc
 
