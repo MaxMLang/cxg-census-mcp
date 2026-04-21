@@ -1,0 +1,40 @@
+name: Feature request
+description: Suggest a new tool, planner heuristic, or behavior change.
+title: "[feature] "
+labels: ["enhancement", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before opening a PR for non-trivial work, please file this issue so
+        we can agree on scope. See [CONTRIBUTING.md](https://github.com/MaxMLang/cxg-census-mcp/blob/main/CONTRIBUTING.md).
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: What can't you do today? What's the user-visible pain point?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Sketch the API / behavior. Bullet points are fine.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What else could solve this? Why is your proposal better?
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and risk
+      description: |
+        Does it add a new runtime dep? Touch the planner? Need a new
+        Census/OLS code path? Affect the response envelope schema?

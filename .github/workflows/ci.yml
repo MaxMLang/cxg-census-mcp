@@ -69,9 +69,9 @@ jobs:
         with:
           python-version: "3.11"
           enable-cache: true
-      - run: uv sync --extra dev
       - name: pip-audit
-        # Audit the locked production dep tree, not the editable project itself.
+        # Audit the locked production dep tree only -- no need to sync dev
+        # extras for this; uv export reads pyproject.toml + uv.lock directly.
         run: |
           uv export --no-dev --no-emit-project --format requirements-txt > _audit-reqs.txt
           uv run --with pip-audit pip-audit --strict -r _audit-reqs.txt

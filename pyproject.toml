@@ -75,7 +75,10 @@ cxg-census-mcp = "cxg_census_mcp.__main__:main"
 
 [project.urls]
 Homepage = "https://github.com/MaxMLang/cxg-census-mcp"
+Source = "https://github.com/MaxMLang/cxg-census-mcp"
 Issues = "https://github.com/MaxMLang/cxg-census-mcp/issues"
+Changelog = "https://github.com/MaxMLang/cxg-census-mcp/blob/main/CHANGELOG.md"
+Documentation = "https://github.com/MaxMLang/cxg-census-mcp#readme"
 
 [build-system]
 requires = ["hatchling"]
