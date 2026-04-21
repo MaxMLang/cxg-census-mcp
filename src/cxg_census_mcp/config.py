@@ -75,13 +75,10 @@ class Settings(BaseSettings):
         return v.upper()
 
     def ensure_dirs(self) -> None:
-        # Cache values are pickled by `diskcache` (see CVE-2025-69872 — local
-        # write access to the cache dir would let an attacker get code
-        # execution at next read). Lock the cache root down to the owner so
-        # other local users on a shared system cannot tamper with it. We do
-        # not enforce this on Windows (POSIX perms don't apply) and we do not
-        # error if `chmod` fails (e.g. mounted filesystems without perm bits)
-        # — best-effort hardening, not a security guarantee.
+        # Cache backend is sqlite+json (see SqliteKV) so a tampered cache
+        # row no longer means code execution. The 0700 on POSIX is kept as
+        # defense-in-depth hygiene — single-user, no need to share — and is
+        # silent on failure (e.g. mounted filesystems without perm bits).
         self.cache_dir.mkdir(parents=True, exist_ok=True)
         if sys.platform != "win32":
             with contextlib.suppress(OSError):

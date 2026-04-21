@@ -31,7 +31,7 @@ class PlanStore:
     def vacuum(self) -> int:
         """Drop expired entries from the on-disk plan cache.
 
-        Returns the number of entries reclaimed. ``diskcache`` already evicts
+        Returns the number of entries reclaimed. The KV layer already evicts
         on read, so this is a manual sweep used by maintenance scripts.
         """
         cache = get_plan_cache()._cache

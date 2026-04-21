@@ -73,12 +73,9 @@ jobs:
       - run: uv sync --extra dev
       - name: pip-audit
         # Audit the locked production dep tree, not the editable project itself.
-        # Ignored CVEs (threat model + revisit conditions in SECURITY.md):
-        #   CVE-2025-69872  diskcache 5.6.3 — local pickle deserialization, no upstream fix yet
         run: |
           uv export --no-dev --no-emit-project --format requirements-txt > _audit-reqs.txt
-          uv run --with pip-audit pip-audit --strict -r _audit-reqs.txt \
-            --ignore-vuln CVE-2025-69872
+          uv run --with pip-audit pip-audit --strict -r _audit-reqs.txt
 
   validate-fixtures:
     runs-on: ubuntu-latest

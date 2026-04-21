@@ -14,7 +14,7 @@ every response.
 > **not** a clinical or diagnostic instrument. Always verify results before
 > publication. See [LICENSE](LICENSE) for the full trademark and content
 > attribution notice, and [SECURITY.md](SECURITY.md) for the threat model
-> and the policy on known issues (currently CVE-2025-69872 in `diskcache`).
+> and known-issues policy.
 
 > Alpha (v0.3.0). [`CHANGELOG.md`](CHANGELOG.md)
 

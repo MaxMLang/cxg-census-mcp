@@ -34,11 +34,7 @@ typecheck:  ## Run mypy on src
 
 audit:  ## Scan locked production deps for known CVEs (skips editable project)
 	uv export --no-dev --no-emit-project --format requirements-txt > _audit-reqs.txt
-	# CVE-2025-69872 (diskcache pickle deserialization, no upstream fix as of
-	# writing) is intentionally suppressed. Threat model + revisit conditions
-	# are documented in SECURITY.md.
-	uv run --with pip-audit pip-audit --strict -r _audit-reqs.txt \
-		--ignore-vuln CVE-2025-69872
+	uv run --with pip-audit pip-audit --strict -r _audit-reqs.txt
 	rm -f _audit-reqs.txt
 
 ## --- Tests -----------------------------------------------------------------

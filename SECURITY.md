@@ -34,37 +34,29 @@ SOMA store.
 
 ## Known issues / accepted risk
 
-### CVE-2025-69872 — `diskcache` pickle deserialization (open, no upstream fix)
+None at the moment.
 
-We depend on [`diskcache`](https://pypi.org/project/diskcache/) for the
-on-disk OLS / facet / plan caches. Through 5.6.3, diskcache uses Python
-`pickle` for value serialization. Per the published CVE, an attacker with
-**write access to the cache directory** can achieve arbitrary code execution
-when a victim application reads from the cache.
+## Resolved
 
-**Why it is intentionally still in `pip-audit --ignore-vuln` for now:**
+### CVE-2025-69872 — `diskcache` pickle deserialization (resolved by removing the dependency)
 
-- The risk is **local**: it requires write access to the user's cache
-  directory. An attacker with that level of access on a single-user system
-  already has many easier ways to execute code as that user
-  (`~/.bashrc`, `~/.zshrc`, `pip install ...`, …). diskcache is not the weak
-  link in that scenario.
-- We do not deserialize pickles from untrusted sources at runtime — every
-  value in the cache was serialized by this same process.
-- We harden the cache root to `0700` on POSIX (`config.Settings.ensure_dirs`).
-- There is no upstream fix yet (NVD lists no fix version as of writing).
+Earlier versions of `cxg-census-mcp` used [`diskcache`](https://pypi.org/project/diskcache/)
+for the on-disk OLS / facet / plan caches. Through 5.6.3, diskcache uses
+Python `pickle` for value serialization, so an attacker with write access
+to the cache directory could achieve code execution when the server next
+read the cache (CVE-2025-69872).
 
-**When this should be revisited:**
+We dropped `diskcache` entirely and replaced it with a small sqlite + JSON
+KV store (`src/cxg_census_mcp/caches/_sqlite_kv.py`). All cached values are
+JSON-serialized; a tampered row at worst raises `json.JSONDecodeError` and
+is treated as a cache miss. There is no deserialization-to-code path.
 
-- Immediately if `diskcache` ships a fix → drop the `--ignore-vuln` line in
-  `Makefile` and `.github/workflows/ci.yml`, bump the version pin in
-  `pyproject.toml`.
-- Or proactively, by replacing diskcache with a non-pickle backend (sqlite +
-  JSON), which is tracked as a follow-up.
+The `chmod 0700` on the cache root in `Settings.ensure_dirs()` is kept as
+defense-in-depth hygiene, but is no longer load-bearing.
 
-If you intend to deploy this on a **shared / multi-user host**, do not use
-the default cache directory; set `CXG_CENSUS_MCP_CACHE_DIR` to a path you
-fully control, and audit its permissions yourself.
+If you intend to deploy this on a **shared / multi-user host**, set
+`CXG_CENSUS_MCP_CACHE_DIR` to a path you fully control and audit its
+permissions yourself regardless.
 
 ## Reporting a vulnerability
 
