@@ -1,81 +1,76 @@
 # cxg-census-mcp
 
-A community-maintained [Model Context Protocol](https://modelcontextprotocol.io)
-(MCP) server for the [CZ CELLxGENE Discover Census](https://chanzuckerberg.github.io/cellxgene-census/) —
-the public, programmatically-queryable single-cell atlas curated by the Chan
-Zuckerberg Initiative. Free-text terms and CURIEs go through OLS4 + a small
-hint file, filters become SOMA `value_filter` expressions, and every tool
-response includes machine-readable provenance and attribution (with typed
-errors when something cannot run server-side).
+A community-built [Model Context Protocol](https://modelcontextprotocol.io)
+(MCP) server that lets LLM agents query the [CZ CELLxGENE Discover Census](https://chanzuckerberg.github.io/cellxgene-census/)
+single-cell atlas with ontology-aware filters, cost caps, and provenance on
+every response.
 
-> **Independent / unaffiliated.** `cxg-census-mcp` is an independent,
-> community-maintained project authored by Max M. Lang. It is **not**
-> affiliated with, endorsed by, or sponsored by the Chan Zuckerberg Initiative
-> (CZI), EMBL-EBI, the U.S. Census Bureau, or any other organization.
-> "CELLxGENE", "CELLxGENE Discover", and "CELLxGENE Discover Census" are
-> product/brand names of CZI; references here are descriptive (nominative use)
-> only. See [LICENSE](LICENSE) for the full trademark and attribution notice.
+> **Independent / unaffiliated.** Authored by Max M. Lang. Not affiliated
+> with, endorsed by, or sponsored by the Chan Zuckerberg Initiative (CZI),
+> EMBL-EBI, the U.S. Census Bureau, or anyone else. "CELLxGENE" is a CZI
+> mark; references here are descriptive (nominative) use only.
+>
+> **No warranty.** MIT-licensed source, "as is". Research/exploration tool —
+> **not** a clinical or diagnostic instrument. Always verify results before
+> publication. See [LICENSE](LICENSE) for the full trademark and content
+> attribution notice.
 
-> **No warranty.** This software is provided "as is", without warranty of
-> any kind, under the MIT License. It is intended for **research and
-> exploration**, not clinical or diagnostic use. Always verify results before
-> publication.
+> Alpha (v0.3.0). [`CHANGELOG.md`](CHANGELOG.md)
 
-> Alpha (v0.3.0). [`CHANGELOG.md`](CHANGELOG.md) · [`docs/architecture.md`](docs/architecture.md).
+## Architecture at a glance
 
-## What it does
+```
+                 ┌──────────────────────────────────────────────┐
+   MCP client    │   tools/        thin MCP wrappers, no logic  │
+   (Claude,  ─►  │     │                                        │
+    Cursor,      │     ▼                                        │
+    Code, …)     │   planner/      FilterSpec → QueryPlan,      │
+                 │     │           cost estimate, tier routing  │
+                 │     ▼                                        │
+                 │   ontology/     OLS4 + hint overlay,         │
+                 │     │           CL/UBERON/MONDO expansion    │
+                 │     ▼                                        │
+                 │   execution/    Tier 0  facet counts         │
+                 │     │           Tier 1  chunked obs scan     │
+                 │     │           Tier 2  expression aggregate │
+                 │     │           Tier 9  refuse → snippet     │
+                 │     ▼                                        │
+                 │   clients/      OLS4 (HTTPS) + Census/SOMA   │
+                 │                                              │
+                 │   caches/       OLS, facet, plan, filter LRU │
+                 │   models/       Response envelope w/         │
+                 │                 attribution + provenance     │
+                 └──────────────────────────────────────────────┘
+                                    │
+                                    ▼
+                       ┌────────────────────────┐
+                       │ EBI OLS4 (ontology)    │
+                       │ CZ CELLxGENE Census    │
+                       │ (CC BY 4.0 data)       │
+                       └────────────────────────┘
+```
 
-- Resolve free-text labels to ontology IDs (CL, UBERON, MONDO, EFO, HANCESTRO, …) via OLS4 + local hints.
-- Plan queries with a pinned Census version, schema-drift rewrites, tissue routing, and cost caps.
-- Counts, dataset lists, gene presence, expression aggregates, obs previews — not bulk X export.
-- Over caps or ambiguous terms: structured errors; large jobs can use `export_snippet` + local Python.
+Full architecture notes: [`docs/architecture.md`](docs/architecture.md).
+Tool reference: [`docs/tool-reference.md`](docs/tool-reference.md).
+Example questions: [`docs/example-questions.md`](docs/example-questions.md).
 
-## MCP capabilities
+## Quick start
 
-| Channel       | What's exposed                                                              |
-|---------------|-----------------------------------------------------------------------------|
-| `tools`       | 13 tools — see below.                                                       |
-| `resources`   | Markdown docs under `cxg-census-mcp://docs/{schema,ontology,limitations,workflow,errors,progress}`. |
-| `prompts`     | `census_workflow`, `disambiguation` — agent-guidance templates.             |
-| `progress`    | `notifications/progress` for `count_cells`, `aggregate_expression`, `preview_obs` when the client passes a `progressToken`. |
-| `cancellation`| `notifications/cancelled` cooperatively stops chunked scans.                |
-
-## Installation
-
-Requires Python 3.11+. Uses [uv](https://docs.astral.sh/uv/).
+Requires Python 3.11+ and [uv](https://docs.astral.sh/uv/).
 
 ```bash
 git clone https://github.com/MaxMLang/cxg-census-mcp
 cd cxg-census-mcp
-uv sync                            # core install (mock-mode capable)
-uv sync --extra census             # add cellxgene_census + tiledbsoma
-uv sync --extra dev                # add test/lint tooling
+uv sync --extra census          # add `--extra dev` for tests/lint
+uv run cxg-census-mcp           # speaks MCP over stdio
 ```
 
-To run the server over stdio:
+Without `--extra census` the server runs in mock mode (handy for development
+and offline demos) and returns deterministic fixture data.
 
-```bash
-uv run cxg-census-mcp
-# or
-uv run python -m cxg_census_mcp
-```
+## MCP client config
 
-## Configuration
-
-All env vars use the `CXG_CENSUS_MCP_` prefix. Most-useful subset:
-
-| Variable | Default | Purpose |
-|---|---|---|
-| `CXG_CENSUS_MCP_CENSUS_VERSION` | `stable` | Census release to pin |
-| `CXG_CENSUS_MCP_CACHE_DIR` | platformdirs default | Disk cache root |
-| `CXG_CENSUS_MCP_MOCK_MODE` | `0` | If `1`, never opens a real Census handle (dev/testing) |
-| `CXG_CENSUS_MCP_LOG_LEVEL` | `WARNING` | stdlib log level |
-
-All settings: `src/cxg_census_mcp/config.py` (`CXG_CENSUS_MCP_*`); defaults are conservative for local runs.
-
-## MCP client setup
-
-### Claude Desktop
+Cursor (`.cursor/mcp.json`) and Claude Desktop both expect the same shape:
 
 ```json
 {
@@ -88,95 +83,87 @@ All settings: `src/cxg_census_mcp/config.py` (`CXG_CENSUS_MCP_*`); defaults are 
 }
 ```
 
-### Cursor
-
-`.cursor/mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "cxg-census": {
-      "command": "uv",
-      "args": ["--directory", "/path/to/cxg-census-mcp", "run", "cxg-census-mcp"]
-    }
-  }
-}
-```
-
-### Claude Code
+Claude Code:
 
 ```bash
 claude mcp add cxg-census -- uv --directory /path/to/cxg-census-mcp run cxg-census-mcp
 ```
 
-## Tools (high level)
+## Tools (13 total)
 
-**Workflow tools:** `census_summary`, `get_census_versions`, `count_cells`,
+**Workflow:** `census_summary`, `get_census_versions`, `count_cells`,
 `list_datasets`, `gene_coverage`, `aggregate_expression`, `preview_obs`,
 `export_snippet`, `get_server_limits`.
 
-**Inspection tools:** `resolve_term`, `expand_term`, `term_definition`,
+**Inspection:** `resolve_term`, `expand_term`, `term_definition`,
 `list_available_values`.
 
-See [`docs/tool-reference.md`](docs/tool-reference.md) for full signatures.
+Plus MCP `resources` (markdown docs at `cxg-census-mcp://docs/{slug}`),
+`prompts` (`census_workflow`, `disambiguation`), and cooperative
+`progress` / `cancellation` notifications. Details in
+[`docs/tool-reference.md`](docs/tool-reference.md).
 
-## Development
+## Configuration
 
-A `Makefile` wraps the common flows; run `make help` for the full list.
+All env vars use the `CXG_CENSUS_MCP_` prefix. Most useful:
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `CXG_CENSUS_MCP_CENSUS_VERSION` | `stable` | Census release to pin |
+| `CXG_CENSUS_MCP_CACHE_DIR` | platformdirs default | Disk cache root |
+| `CXG_CENSUS_MCP_MOCK_MODE` | `0` | If `1`, never opens a real Census handle |
+| `CXG_CENSUS_MCP_LOG_LEVEL` | `WARNING` | stdlib log level |
+
+Full list and validation: `src/cxg_census_mcp/config.py`.
+
+## Development & operations
+
+Quick loop:
 
 ```bash
-make install-all                   # uv sync --extra dev --extra census
-make lint typecheck test           # ruff + mypy + pytest (mock mode)
-make cov                           # tests + coverage HTML in ./htmlcov
-make test-live                     # E2E against real OLS + Census (slow)
-make audit                         # pip-audit against installed deps
-make format                        # ruff format
+make install-all                 # uv sync --extra dev --extra census
+make lint typecheck test         # ruff + mypy + pytest (mock mode)
+make cov                         # tests + coverage HTML in ./htmlcov
+make audit                       # pip-audit on locked production deps
 ```
 
-### Pre-commit
+Operational tasks (cache pre-warm, schema diff, container build, metrics
+dump, plan-cache vacuum, weekly hint/facet refresh) live in the
+[`Makefile`](Makefile) and are documented in
+[`docs/operational-playbook.md`](docs/operational-playbook.md).
 
-```bash
-uv run pre-commit install
-uv run pre-commit run --all-files
-```
+## Documentation index
 
-## Operations
+| Topic | Where |
+|---|---|
+| System architecture | [`docs/architecture.md`](docs/architecture.md) |
+| Tool reference | [`docs/tool-reference.md`](docs/tool-reference.md) |
+| Example agent questions | [`docs/example-questions.md`](docs/example-questions.md) |
+| Ontology resolution | [`docs/ontology-resolution.md`](docs/ontology-resolution.md) |
+| Schema-drift handling | [`docs/schema-drift-format.md`](docs/schema-drift-format.md) |
+| Census version pinning | [`docs/version-pinning.md`](docs/version-pinning.md) |
+| Progress / cancellation | [`docs/progress-and-cancellation.md`](docs/progress-and-cancellation.md) |
+| Error model | [`docs/error-model.md`](docs/error-model.md) |
+| Known limitations | [`docs/limitations.md`](docs/limitations.md) |
+| Ops runbook | [`docs/operational-playbook.md`](docs/operational-playbook.md) |
+| Changelog | [`CHANGELOG.md`](CHANGELOG.md) |
 
-| Task                            | Command                                                  |
-|---------------------------------|----------------------------------------------------------|
-| Pre-warm OLS cache              | `make prewarm`                                           |
-| Refresh `ontology_hints.json`   | `make refresh-hints` (also a weekly GitHub Action)       |
-| Refresh `facet_catalog.json`    | `make refresh-facets` (also a weekly GitHub Action)      |
-| Vacuum expired plan-cache rows  | `make vacuum-plans`                                      |
-| Diff two Census schemas         | `make diff-versions FROM=2024-07-01 TO=stable`           |
-| Dump Prometheus metrics         | `make metrics` (writes `metrics.prom`)                   |
-| Build container                 | `make docker-build IMAGE=cxg-census-mcp TAG=$(git rev-parse --short HEAD)` |
-| Run container (stdio)           | `make docker-run`                                        |
+## License & attribution
 
-Runtime stats — cache hit/miss, cap rejections, tool calls/errors, plan-cache
-size — are also returned inline by `get_server_limits` so MCP clients can
-inspect them without a side channel.
+Source code: [MIT](LICENSE). The MIT license covers **only** the code in
+this repository, not the upstream data, ontologies, or third-party
+trademarks.
 
-## License, attribution, trademarks
-
-The source code in this repository is released under the [MIT License](LICENSE).
-The MIT license covers **only the code**, not the upstream data, ontologies,
-or any third-party trademarks.
-
-- **Upstream data.** Tool responses are derived (filtered/aggregated) from
-  the **CZ CELLxGENE Discover Census**, distributed by the Chan Zuckerberg
+- **Data.** Tool responses are derived (filtered/aggregated) from the
+  CZ CELLxGENE Discover Census, distributed by the Chan Zuckerberg
   Initiative under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
-  Every response carries an `attribution` field reflecting this; downstream
-  users must preserve attribution and indicate that changes were made.
-- **Ontology terms** come from the EBI **Ontology Lookup Service (OLS4)**
-  and originate from third-party ontologies (CL, UBERON, MONDO, EFO,
-  HANCESTRO, …). Each ontology carries its own license; consult the
-  respective ontology for terms.
-- **Trademarks.** "CELLxGENE", "CELLxGENE Discover", and
-  "CELLxGENE Discover Census" are CZI marks. "Cursor", "Claude", "Anthropic",
-  and "Model Context Protocol" are marks of their respective owners. Use of
-  these names in this README is descriptive (nominative use) only and does
-  not imply affiliation or endorsement.
+  Every response carries an `attribution` field; downstream users must
+  preserve attribution and indicate that changes were made.
+- **Ontologies** are fetched via EBI Ontology Lookup Service (OLS4) from
+  CL, UBERON, MONDO, EFO, HANCESTRO, and others; each carries its own
+  license.
+- **Trademarks** ("CELLxGENE", "Cursor", "Claude", "Anthropic", "Model
+  Context Protocol", …) belong to their respective owners. Use here is
+  descriptive only and does not imply affiliation.
 
-This server is for research and exploration. It is **not** a clinical or
-diagnostic tool. Always verify results before publication.
+Full notice in [LICENSE](LICENSE).
