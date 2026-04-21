@@ -5,7 +5,6 @@ type: software
 authors:
   - family-names: Lang
     given-names: Max M.
-    orcid: "https://orcid.org/0000-0000-0000-0000"  # TODO: replace with real ORCID or remove
 repository-code: "https://github.com/MaxMLang/cxg-census-mcp"
 url: "https://github.com/MaxMLang/cxg-census-mcp"
 license: MIT
