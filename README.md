@@ -20,7 +20,7 @@ every response.
 > attribution notice, and [SECURITY.md](SECURITY.md) for the threat model
 > and known-issues policy.
 
-> Alpha (v0.3.0). [`CHANGELOG.md`](CHANGELOG.md)
+> Alpha (v0.1.0). [`CHANGELOG.md`](CHANGELOG.md)
 
 ## Architecture at a glance
 

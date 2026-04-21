@@ -1,6 +1,6 @@
 [project]
 name = "cxg-census-mcp"
-version = "0.3.0"
+version = "0.1.0"
 description = "Community Model Context Protocol (MCP) server for the CZ CELLxGENE Discover Census single-cell atlas: ontology-aware filters, provenance, caps, export_snippet. Independent project, not affiliated with CZI, EBI, or any government statistical agency."
 readme = "README.md"
 requires-python = ">=3.11,<3.13"
