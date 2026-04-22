@@ -1,0 +1,26 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.MaxMLang/cxg-census-mcp",
+  "title": "cxg-census-mcp",
+  "description": "MCP server for the CZ CELLxGENE Census. Single-cell, ontology-aware. Community, unaffiliated.",
+  "repository": {
+    "url": "https://github.com/MaxMLang/cxg-census-mcp",
+    "source": "github"
+  },
+  "websiteUrl": "https://github.com/MaxMLang/cxg-census-mcp",
+  "version": "0.1.2",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "registryBaseUrl": "https://pypi.org",
+      "identifier": "cxg-census-mcp",
+      "version": "0.1.2",
+      "runtimeHint": "uvx",
+      "runtimeArguments": [
+        { "type": "named", "name": "--from", "value": "cxg-census-mcp[census]" },
+        { "type": "positional", "value": "cxg-census-mcp" }
+      ],
+      "transport": { "type": "stdio" }
+    }
+  ]
+}
