@@ -1,6 +1,6 @@
 [project]
 name = "cxg-census-mcp"
-version = "0.1.1"
+version = "0.1.2"
 description = "Community MCP server for the CZ CELLxGENE Discover Census single-cell atlas. Ontology-aware, provenance-tracked, unaffiliated with CZI."
 readme = "README.md"
 requires-python = ">=3.11,<3.13"

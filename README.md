@@ -1,5 +1,7 @@
 # cxg-census-mcp
 
+<!-- mcp-name: io.github.MaxMLang/cxg-census-mcp -->
+
 [![PyPI](https://img.shields.io/pypi/v/cxg-census-mcp.svg)](https://pypi.org/project/cxg-census-mcp/)
 [![PyPI downloads](https://img.shields.io/pypi/dm/cxg-census-mcp.svg)](https://pypi.org/project/cxg-census-mcp/)
 [![CI](https://github.com/MaxMLang/cxg-census-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/MaxMLang/cxg-census-mcp/actions/workflows/ci.yml)
@@ -32,7 +34,7 @@ English.
 > [SECURITY.md](https://github.com/MaxMLang/cxg-census-mcp/blob/main/SECURITY.md)
 > for the threat model and known-issues policy.
 
-> Alpha (v0.1.1). [`CHANGELOG.md`](https://github.com/MaxMLang/cxg-census-mcp/blob/main/CHANGELOG.md)
+> Alpha (v0.1.2). [`CHANGELOG.md`](https://github.com/MaxMLang/cxg-census-mcp/blob/main/CHANGELOG.md)
 
 ## Demos
 
