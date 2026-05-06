@@ -22,6 +22,10 @@ Cursor / Claude Desktop / Claude Code and ask questions like *"compare
 immune cell composition of healthy vs COVID-19 human lung"* in plain
 English.
 
+<p align="center">
+  <img width="600" alt="demo" src="https://github.com/user-attachments/assets/937e2598-a2a8-4e61-b9a1-25bdd5460907" />
+</p>
+
 > **Independent / unaffiliated.** Not affiliated
 > with, endorsed by, or sponsored by the Chan Zuckerberg Initiative (CZI),
 > EMBL-EBI, the U.S. Census Bureau, or anyone else. "CELLxGENE" is a CZI
