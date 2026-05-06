@@ -18,8 +18,7 @@ An [MCP](https://modelcontextprotocol.io) server that lets LLM agents
 query the [CZ CELLxGENE Discover Census](https://chanzuckerberg.github.io/cellxgene-census/)
 single-cell atlas without lying about it — ontology-aware filters, cost
 caps, full provenance + attribution on every response. Drop it into
-Cursor / Claude Desktop / Claude Code and ask questions like *"compare
-immune cell composition of healthy vs COVID-19 human lung"* in plain
+Cursor / Claude Desktop / Claude Code and ask questions like *"Visualize the cell-type composition of the human lung"* in plain
 English.
 
 <p align="center">
