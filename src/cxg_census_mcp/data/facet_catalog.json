@@ -2,7 +2,7 @@
   "_meta": {
     "schema": 1,
     "description": "Per-Census-version facet snapshot. Refreshed by scripts/refresh_facet_catalog.py.",
-    "last_refreshed": "2026-05-05",
+    "last_refreshed": "2026-05-12",
     "census_version": "stable"
   },
   "versions": {
