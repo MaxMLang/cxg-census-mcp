@@ -2,7 +2,7 @@
   "_meta": {
     "schema": 1,
     "description": "Curated text → CURIE overlay used before OLS lookup. Refreshed weekly.",
-    "last_refreshed": "2026-07-13",
+    "last_refreshed": "2026-08-24",
     "review_required_for_canonical_changes": true
   },
   "diseases": {
